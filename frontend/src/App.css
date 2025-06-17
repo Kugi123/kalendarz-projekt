@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 button {
@@ -9,39 +10,30 @@ button {
   font-size: 14px;
   cursor: pointer;
 }
-.fc {
-  max-width: 100vw;
-  overflow-x: auto;
-}
-/* Styl dla FullCalendar na mobile */
-.fc-header-toolbar {
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
 
-.fc .fc-button {
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-.fc .fc-button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
+/* FULLCALENDAR STYLES */
 
 .fc {
   max-width: 100vw;
   overflow-x: auto;
 }
+
+.fc .fc-view-harness {
+  min-height: 500px;
+  touch-action: manipulation;
+}
+
+.fc-daygrid-day, .fc-timegrid-slot {
+  cursor: pointer;
+}
+
+/* Toolbar responsywny */
 .fc-header-toolbar {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  margin-bottom: 0.5rem;
 }
 
 /* Górna linia: strzałki + today */
@@ -67,8 +59,16 @@ button {
   gap: 6px;
 }
 
-/* Zmniejsz trochę przyciski */
-.fc-button {
+/* Przyciski kalendarza */
+.fc .fc-button {
+  font-size: 12px;
   padding: 4px 8px;
-  font-size: 14px;
+  border-radius: 6px;
+}
+
+/* Grupy przycisków */
+.fc .fc-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
