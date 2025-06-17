@@ -221,4 +221,4 @@ with app.app_context():
         print("Konto admina utworzone.")
     else:
         print("Konto admina już istnieje.")
-application = app
+app = app
