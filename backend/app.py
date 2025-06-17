@@ -221,4 +221,9 @@ with app.app_context():
         print("Konto admina utworzone.")
     else:
         print("Konto admina już istnieje.")
+
+@app.route('/')
+def index():
+    return 'Backend działa'
+
 app = app
