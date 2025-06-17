@@ -58,7 +58,7 @@ function App() {
       return;
     }
 
-    axios.post('http://https://kalendarz-projekt.onrender.com/appointments', {
+    axios.post('https://kalendarz-projekt.onrender.com/appointments', {
       start: input
     }).then(() => fetchAppointments())
       .catch((err) => alert(err.response?.data?.error || 'Błąd rejestracji'));
@@ -77,7 +77,7 @@ function App() {
     if (choice === '') {
       const confirmed = window.confirm(`Czy na pewno chcesz usunąć wizytę z ${clickInfo.event.startStr}?`);
       if (confirmed) {
-        axios.delete(`https://kalendarz-projekt.onrender.com0/appointments/${clickInfo.event.id}`)
+        axios.delete(`https://kalendarz-projekt.onrender.com/appointments/${clickInfo.event.id}`)
           .then(() => fetchAppointments())
           .catch(() => alert("Błąd przy usuwaniu wizyty"));
       }
