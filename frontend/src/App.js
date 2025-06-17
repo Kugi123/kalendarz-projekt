@@ -24,7 +24,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchAppointments = () => {
-    axios.get('http://localhost:5000/appointments').then((res) => {
+    axios.get('https://kalendarz-projekt.onrender.com/appointments').then((res) => {
       setEvents(res.data.map(e => ({
         ...e,
         title: e.mine ? 'Twoja wizyta' : 'Zajęte',
@@ -34,7 +34,7 @@ function App() {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:5000/check').then(res => {
+    axios.get('https://kalendarz-projekt.onrender.com/check').then(res => {
       setLoggedIn(res.data.loggedIn);
       setIsAdmin(res.data.isAdmin);
       if (res.data.loggedIn) fetchAppointments();
@@ -58,7 +58,7 @@ function App() {
       return;
     }
 
-    axios.post('http://localhost:5000/appointments', {
+    axios.post('http://https://kalendarz-projekt.onrender.com/appointments', {
       start: input
     }).then(() => fetchAppointments())
       .catch((err) => alert(err.response?.data?.error || 'Błąd rejestracji'));
@@ -77,12 +77,12 @@ function App() {
     if (choice === '') {
       const confirmed = window.confirm(`Czy na pewno chcesz usunąć wizytę z ${clickInfo.event.startStr}?`);
       if (confirmed) {
-        axios.delete(`http://localhost:5000/appointments/${clickInfo.event.id}`)
+        axios.delete(`https://kalendarz-projekt.onrender.com0/appointments/${clickInfo.event.id}`)
           .then(() => fetchAppointments())
           .catch(() => alert("Błąd przy usuwaniu wizyty"));
       }
     } else {
-      axios.put(`http://localhost:5000/appointments/${clickInfo.event.id}`, {
+      axios.put(`https://kalendarz-projekt.onrender.com/appointments/${clickInfo.event.id}`, {
         start: choice
       })
       .then(() => fetchAppointments())
@@ -91,7 +91,7 @@ function App() {
   };
 
   const register = () => {
-    axios.post('http://localhost:5000/register', {
+    axios.post('https://kalendarz-projekt.onrender.com/register', {
       username,
       password,
       first_name: firstName,
@@ -107,12 +107,12 @@ function App() {
   };
 
   const login = () => {
-    axios.post('http://localhost:5000/login', { username, password })
+    axios.post('https://kalendarz-projekt.onrender.com/login', { username, password })
       .then(() => {
         setLoggedIn(true);
         setUsername('');
         setPassword('');
-        axios.get('http://localhost:5000/check').then(res => {
+        axios.get('https://kalendarz-projekt.onrender.com/check').then(res => {
           setIsAdmin(res.data.isAdmin);
           fetchAppointments();
         });
@@ -121,7 +121,7 @@ function App() {
   };
 
   const logout = () => {
-    axios.post('http://localhost:5000/logout').then(() => {
+    axios.post('https://kalendarz-projekt.onrender.com/logout').then(() => {
       setLoggedIn(false);
       setEvents([]);
       setIsAdmin(false);

@@ -33,7 +33,7 @@ mail = Mail(app)
 os.makedirs(os.path.join(basedir, 'instance'), exist_ok=True)
 
 db = SQLAlchemy(app)
-CORS(app, supports_credentials=True, origins=["*"])
+CORS(app, supports_credentials=True, origins=["https://kalendarz-projekt.onrender.com/"])
 
 
 login_manager = LoginManager()
@@ -42,7 +42,7 @@ login_manager.init_app(app)
 @app.after_request
 def add_cors_headers(response):
     response.headers.add('Access-Control-Allow-Credentials', 'true')
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    response.headers.add('Access-Control-Allow-Origin', 'https://kalendarz-projekt.onrender.com/')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
     response.headers.add('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT')  # ← TO DODAJ
     return response
