@@ -7,7 +7,6 @@ import '@fullcalendar/core/locales-all';
 
 import './App.css';
 import axios from 'axios';
-axios.defaults.baseURL = 'https://kalendarz-projekt.onrender.com';
 axios.defaults.withCredentials = true;
 
 
