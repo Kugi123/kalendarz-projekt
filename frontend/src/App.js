@@ -7,8 +7,8 @@ import '@fullcalendar/core/locales-all';
 
 import './App.css';
 import axios from 'axios';
-axios.defaults.withCredentials = true;
 
+axios.defaults.withCredentials = true;
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -21,9 +21,16 @@ function App() {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const fetchAppointments = () => {
-    axios.get('/appointments') .then((res) => {
+    axios.get('/appointments').then((res) => {
       setEvents(res.data.map(e => ({
         ...e,
         title: e.mine ? 'Twoja wizyta' : 'Zajęte',
@@ -63,6 +70,32 @@ function App() {
       .catch((err) => alert(err.response?.data?.error || 'Błąd rejestracji'));
   };
 
+  const handleDateClick = (info) => {
+    if (!loggedIn) {
+      alert("Zaloguj się, aby umówić wizytę");
+      return;
+    }
+
+    const calendarApi = info.view?.calendar;
+    if (calendarApi) {
+      calendarApi.changeView('timeGridDay', info.dateStr);
+    }
+
+    const defaultDateTime = info.dateStr.slice(0, 16);
+    const input = prompt("Potwierdź termin (YYYY-MM-DDTHH:MM):", defaultDateTime);
+    if (!input) return;
+
+    const now = new Date();
+    if (new Date(input) < now) {
+      alert("Nie można umówić wizyty w przeszłości");
+      return;
+    }
+
+    axios.post('/appointments', { start: input })
+      .then(() => fetchAppointments())
+      .catch((err) => alert(err.response?.data?.error || 'Błąd rejestracji'));
+  };
+
   const handleEventClick = (clickInfo) => {
     if (!isAdmin) return;
 
@@ -76,21 +109,21 @@ function App() {
     if (choice === '') {
       const confirmed = window.confirm(`Czy na pewno chcesz usunąć wizytę z ${clickInfo.event.startStr}?`);
       if (confirmed) {
-        axios.delete(`https://kalendarz-projekt.onrender.com/appointments/${clickInfo.event.id}`)
+        axios.delete(`/appointments/${clickInfo.event.id}`)
           .then(() => fetchAppointments())
           .catch(() => alert("Błąd przy usuwaniu wizyty"));
       }
     } else {
-      axios.put(`https://kalendarz-projekt.onrender.com/appointments/${clickInfo.event.id}`, {
+      axios.put(`/appointments/${clickInfo.event.id}`, {
         start: choice
       })
-      .then(() => fetchAppointments())
-      .catch(() => alert("Błąd przy zmianie terminu wizyty"));
+        .then(() => fetchAppointments())
+        .catch(() => alert("Błąd przy zmianie terminu wizyty"));
     }
   };
 
   const register = () => {
-    axios.post('https://kalendarz-projekt.onrender.com/register', {
+    axios.post('/register', {
       username,
       password,
       first_name: firstName,
@@ -106,12 +139,12 @@ function App() {
   };
 
   const login = () => {
-    axios.post('https://kalendarz-projekt.onrender.com/login', { username, password })
+    axios.post('/login', { username, password })
       .then(() => {
         setLoggedIn(true);
         setUsername('');
         setPassword('');
-        axios.get('https://kalendarz-projekt.onrender.com/check').then(res => {
+        axios.get('/check').then(res => {
           setIsAdmin(res.data.isAdmin);
           fetchAppointments();
         });
@@ -120,21 +153,12 @@ function App() {
   };
 
   const logout = () => {
-    axios.post('https://kalendarz-projekt.onrender.com/logout').then(() => {
+    axios.post('/logout').then(() => {
       setLoggedIn(false);
       setEvents([]);
       setIsAdmin(false);
     });
   };
-
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-useEffect(() => {
-  const handleResize = () => setIsMobile(window.innerWidth < 768);
-  window.addEventListener('resize', handleResize);
-  return () => window.removeEventListener('resize', handleResize);
-}, []);
-
 
   return (
     <div className="App" style={{ padding: '1rem', fontFamily: 'Arial' }}>
@@ -179,25 +203,17 @@ useEffect(() => {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }}
-	  buttonText={{
- 		 today: 'dzisiaj',
-  		 month: 'miesiąc',
-  		 week: 'tydzień',
- 		 day: 'dzień'
-	  }}
-
+          buttonText={{
+            today: 'dzisiaj',
+            month: 'miesiąc',
+            week: 'tydzień',
+            day: 'dzień'
+          }}
           selectable={true}
           events={events}
           select={handleDateSelect}
           eventClick={handleEventClick}
-          dateClick={(info) => {
-            if (!loggedIn) {
-              alert("Zaloguj się, aby umówić wizytę");
-              return;
-            }
-            const calendarApi = info.view.calendar;
-            calendarApi.changeView('timeGridDay', info.dateStr);
-          }}
+          dateClick={handleDateClick}
           allDaySlot={false}
           selectAllow={(selectInfo) => !selectInfo.allDay}
           slotMinTime="08:00:00"
