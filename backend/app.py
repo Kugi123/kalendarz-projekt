@@ -223,9 +223,6 @@ with app.app_context():
     else:
         print("Konto admina już istnieje.")
 
-@app.route('/')
-def index():
-    return 'Backend działa'
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
