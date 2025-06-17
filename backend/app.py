@@ -204,22 +204,21 @@ def update_appointment(appointment_id):
     return jsonify({'message': 'Wizyta zaktualizowana'})
 
 # START
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        if not User.query.filter_by(username='admin').first():
-            admin = User(
-                username='admin',
-                password_hash=generate_password_hash('admin123'),
-                first_name='Admin',
-                last_name='Lekarz',
-                email='admin@clinic.com',
-                phone='123456789',
-                is_admin=True
-            )
-            db.session.add(admin)
-            db.session.commit()
-            print("Konto admina utworzone.")
-        else:
-            print("Konto admina już istnieje.")
-    app.run(debug=True)
+with app.app_context():
+    db.create_all()
+    if not User.query.filter_by(username='admin').first():
+        admin = User(
+            username='admin',
+            password_hash=generate_password_hash('admin123'),
+            first_name='Admin',
+            last_name='Lekarz',
+            email='admin@clinic.com',
+            phone='123456789',
+            is_admin=True
+        )
+        db.session.add(admin)
+        db.session.commit()
+        print("Konto admina utworzone.")
+    else:
+        print("Konto admina już istnieje.")
+application = app
