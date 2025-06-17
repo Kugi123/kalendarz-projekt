@@ -37,4 +37,38 @@ button {
   max-width: 100vw;
   overflow-x: auto;
 }
+.fc-header-toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
 
+/* Górna linia: strzałki + today */
+.fc .fc-toolbar-chunk:nth-child(1) {
+  order: 1;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Środkowa linia: tytuł (zakres dat) */
+.fc .fc-toolbar-chunk:nth-child(2) {
+  order: 2;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Dolna linia: przyciski widoku */
+.fc .fc-toolbar-chunk:nth-child(3) {
+  order: 3;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Zmniejsz trochę przyciski */
+.fc-button {
+  padding: 4px 8px;
+  font-size: 14px;
+}

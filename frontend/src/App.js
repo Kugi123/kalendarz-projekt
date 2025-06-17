@@ -179,6 +179,13 @@ useEffect(() => {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }}
+	  buttonText={{
+ 		 today: 'dzisiaj',
+  		 month: 'miesiąc',
+  		 week: 'tydzień',
+ 		 day: 'dzień'
+	  }}
+
           selectable={true}
           events={events}
           select={handleDateSelect}
