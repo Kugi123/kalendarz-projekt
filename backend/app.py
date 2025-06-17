@@ -39,6 +39,8 @@ CORS(app, supports_credentials=True, origins=["https://kalendarz-projekt.onrende
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'unauthorized'
+
 
 @app.after_request
 def add_cors_headers(response):
@@ -69,6 +71,10 @@ class Appointment(db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return jsonify({'error': 'Nieautoryzowany dostęp'}), 401
 
 # REJESTRACJA
 @app.route('/register', methods=['POST'])
@@ -231,6 +237,7 @@ def serve(path):
         return send_from_directory('static', path)
     else:
         return send_from_directory('static', 'index.html')
+
 
 
 application = app
