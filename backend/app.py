@@ -16,7 +16,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tajnyklucz'
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'instance', 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -33,7 +33,7 @@ mail = Mail(app)
 os.makedirs(os.path.join(basedir, 'instance'), exist_ok=True)
 
 db = SQLAlchemy(app)
-CORS(app, supports_credentials=True, origins=["https://kalendarz-projekt.onrender.com/"])
+CORS(app, supports_credentials=True, origins=["https://kalendarz-projekt.onrender.com"])
 
 
 login_manager = LoginManager()
@@ -42,7 +42,7 @@ login_manager.init_app(app)
 @app.after_request
 def add_cors_headers(response):
     response.headers.add('Access-Control-Allow-Credentials', 'true')
-    response.headers.add('Access-Control-Allow-Origin', 'https://kalendarz-projekt.onrender.com/')
+    response.headers.add('Access-Control-Allow-Origin', 'https://kalendarz-projekt.onrender.com')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
     response.headers.add('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,DELETE,PUT')  # ← TO DODAJ
     return response
