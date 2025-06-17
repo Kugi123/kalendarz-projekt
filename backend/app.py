@@ -17,6 +17,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tajnyklucz'
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_DOMAIN'] = 'kalendarz-projekt.onrender.com'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'instance', 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -226,4 +227,4 @@ with app.app_context():
 def index():
     return 'Backend działa'
 
-app = app
+application = app
