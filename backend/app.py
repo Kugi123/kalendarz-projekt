@@ -232,11 +232,12 @@ with app.app_context():
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-def serve(path):
+def serve_react(path):
+    if path.startswith('api') or path.startswith('appointments') or path in ['check', 'login', 'logout', 'register']:
+        return jsonify({'error': 'Nie znaleziono'}), 404
     if path != "" and os.path.exists("static/" + path):
         return send_from_directory('static', path)
-    else:
-        return send_from_directory('static', 'index.html')
+    return send_from_directory('static', 'index.html')
 
 
 
