@@ -9,3 +9,12 @@ button {
   font-size: 14px;
   cursor: pointer;
 }
+.fc {
+  max-width: 100vw;
+  overflow-x: auto;
+}
+headerToolbar={{
+  left: 'prev,next today',
+  center: 'title',
+  right: isMobile ? 'timeGridDay' : 'dayGridMonth,timeGridWeek,timeGridDay'
+}}
