@@ -24,7 +24,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchAppointments = () => {
-    axios.get('https://kalendarz-projekt.onrender.com/appointments').then((res) => {
+    axios.get('/appointments') .then((res) => {
       setEvents(res.data.map(e => ({
         ...e,
         title: e.mine ? 'Twoja wizyta' : 'Zajęte',
@@ -34,7 +34,7 @@ function App() {
   };
 
   useEffect(() => {
-    axios.get('https://kalendarz-projekt.onrender.com/check').then(res => {
+    axios.get('/check').then(res => {
       setLoggedIn(res.data.loggedIn);
       setIsAdmin(res.data.isAdmin);
       if (res.data.loggedIn) fetchAppointments();
@@ -58,7 +58,7 @@ function App() {
       return;
     }
 
-    axios.post('https://kalendarz-projekt.onrender.com/appointments', {
+    axios.post('/appointments', {
       start: input
     }).then(() => fetchAppointments())
       .catch((err) => alert(err.response?.data?.error || 'Błąd rejestracji'));
