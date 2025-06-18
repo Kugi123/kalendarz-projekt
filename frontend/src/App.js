@@ -54,7 +54,7 @@ function App() {
     }
 
     const defaultDateTime = info.dateStr.slice(0, 16);
-    const input = prompt("Potwierdź termin (YYYY-MM-DDTHH:MM):", defaultDateTime);
+    const input = window.prompt("Potwierdź termin (YYYY-MM-DDTHH:MM):", defaultDateTime);
     if (!input) return;
 
     const now = new Date();
@@ -65,7 +65,10 @@ function App() {
 
     axios.post('/appointments', { start: input })
       .then(() => fetchAppointments())
-      .catch((err) => alert(err.response?.data?.error || 'Błąd rejestracji'));
+      .catch((err) => {
+        console.error('Błąd rejestracji:', err);
+        alert(err.response?.data?.error || 'Błąd rejestracji');
+      });
   };
 
   const handleEventClick = (clickInfo) => {
@@ -181,7 +184,6 @@ function App() {
             week: 'tydzień',
             day: 'dzień'
           }}
-          selectable={false}
           events={events}
           eventClick={handleEventClick}
           dateClick={handleDateClick}
