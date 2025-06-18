@@ -47,38 +47,10 @@ function App() {
     });
   }, []);
 
-  const handleDateSelect = (selectInfo) => {
-    if (!loggedIn) {
-      alert("Zaloguj się, aby umówić wizytę");
-      return;
-    }
-    if (selectInfo.allDay) return;
-
-    const defaultDateTime = selectInfo.startStr.slice(0, 16);
-    const input = prompt("Potwierdź termin (YYYY-MM-DDTHH:MM):", defaultDateTime);
-    if (!input) return;
-
-    const now = new Date();
-    if (new Date(input) < now) {
-      alert("Nie można umówić wizyty w przeszłości");
-      return;
-    }
-
-    axios.post('/appointments', {
-      start: input
-    }).then(() => fetchAppointments())
-      .catch((err) => alert(err.response?.data?.error || 'Błąd rejestracji'));
-  };
-
   const handleDateClick = (info) => {
     if (!loggedIn) {
       alert("Zaloguj się, aby umówić wizytę");
       return;
-    }
-
-    const calendarApi = info.view?.calendar;
-    if (calendarApi) {
-      calendarApi.changeView('timeGridDay', info.dateStr);
     }
 
     const defaultDateTime = info.dateStr.slice(0, 16);
@@ -209,16 +181,16 @@ function App() {
             week: 'tydzień',
             day: 'dzień'
           }}
-          selectable={true}
+          selectable={false}
           events={events}
-          select={handleDateSelect}
           eventClick={handleEventClick}
           dateClick={handleDateClick}
           allDaySlot={false}
-          selectAllow={(selectInfo) => !selectInfo.allDay}
           slotMinTime="08:00:00"
           slotMaxTime="18:00:00"
           height="auto"
+          longPressDelay={100}
+          selectLongPressDelay={100}
         />
       </div>
     </div>
